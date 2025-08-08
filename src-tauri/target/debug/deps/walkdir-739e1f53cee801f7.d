@@ -1,0 +1,10 @@
+D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\debug\deps\walkdir-739e1f53cee801f7.d: C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\lib.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\dent.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\error.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\util.rs
+
+D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\debug\deps\libwalkdir-739e1f53cee801f7.rlib: C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\lib.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\dent.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\error.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\util.rs
+
+D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\debug\deps\libwalkdir-739e1f53cee801f7.rmeta: C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\lib.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\dent.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\error.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\util.rs
+
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\lib.rs:
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\dent.rs:
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\error.rs:
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\walkdir-2.5.0\src\util.rs:

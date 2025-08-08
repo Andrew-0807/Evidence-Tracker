@@ -1,0 +1,57 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:5173",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "Evidence Tracker",
+    "version": "1.0.2"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "fs": {
+        "copyFile": true,
+        "createDir": true,
+        "readFile": true,
+        "writeFile": true,
+        "scope": ["$APPDATA/*"]
+      },
+      "path": {
+        "all": true
+      },
+      "dialog": {
+        "open": true,
+        "save": true
+      },
+      "notification": {
+        "all": true
+      },
+      "shell": {
+        "open": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.evidencetracker.app",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://api.github.com/repos/YOUR_USERNAME/evidence-tracker/releases/latest"
+      ],
+      "dialog": false,
+      "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnBSqFP97eMIqJCdjl5XKZGgAR05FOSYM2pNQSeoLsIqR6A3CaUnv3oYF6Rhvw4xmnal+Riu0i1CqoeusHVFA8yozUPu3xlM+CwjS/2ZFwBvEJgNMp34lM1gGi3NTc7F4hlVlzyLxvc6szOxilUni5Dwwrxmru82GjlwE2Np

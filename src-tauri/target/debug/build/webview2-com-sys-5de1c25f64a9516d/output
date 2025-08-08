@@ -1,0 +1,1 @@
+cargo:rustc-link-search=native=D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\debug\build\webview2-com-sys-5de1c25f64a9516d\out\x64

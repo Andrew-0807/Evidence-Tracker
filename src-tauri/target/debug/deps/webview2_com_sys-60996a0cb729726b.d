@@ -1,0 +1,7 @@
+D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\debug\deps\webview2_com_sys-60996a0cb729726b.d: C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\webview2-com-sys-0.19.0\src\lib.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\webview2-com-sys-0.19.0\src\Microsoft\Web\WebView2\Win32\mod.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\webview2-com-sys-0.19.0\src\callback_interfaces.rs
+
+D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\debug\deps\libwebview2_com_sys-60996a0cb729726b.rmeta: C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\webview2-com-sys-0.19.0\src\lib.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\webview2-com-sys-0.19.0\src\Microsoft\Web\WebView2\Win32\mod.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\webview2-com-sys-0.19.0\src\callback_interfaces.rs
+
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\webview2-com-sys-0.19.0\src\lib.rs:
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\webview2-com-sys-0.19.0\src\Microsoft\Web\WebView2\Win32\mod.rs:
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\webview2-com-sys-0.19.0\src\callback_interfaces.rs:

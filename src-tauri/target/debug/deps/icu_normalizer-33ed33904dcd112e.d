@@ -1,0 +1,8 @@
+D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\debug\deps\icu_normalizer-33ed33904dcd112e.d: C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\lib.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\properties.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\provider.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\uts46.rs
+
+D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\debug\deps\libicu_normalizer-33ed33904dcd112e.rmeta: C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\lib.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\properties.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\provider.rs C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\uts46.rs
+
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\lib.rs:
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\properties.rs:
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\provider.rs:
+C:\Users\IO\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-2.0.0\src\uts46.rs:

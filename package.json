@@ -1,0 +1,47 @@
+{
+  "name": "evidence-tracker",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf node_modules/.vite && npm install",
+    "dev": "vite dev",
+    "build": "vite build",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "check-i18n": "node scripts/checkTranslations.js",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "start": "npm run tauri dev",
+    "build:tauri": "npm run tauri build",
+    "dev:tauri": "npm run tauri dev",
+    "build:exe": "npm run tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.7.0",
+    "@tauri-apps/plugin-dialog": "^2.3.2",
+    "@tauri-apps/plugin-process": "^2.3.0",
+    "@tauri-apps/plugin-updater": "^2.9.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^8.56.0",
+    "@tauri-apps/cli": "^1.5.0",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "globals": "^13.24.0",
+    "postcss": "^8.5.6",
+    "rimraf": "^6.0.1",
+    "tailwindcss": "^3.4.3",
+    "vite": "^7.0.5"
+  }
+}
