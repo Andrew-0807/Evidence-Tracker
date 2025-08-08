@@ -1,10 +1,20 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from 'path';
+
 export default defineConfig({
   root: './',
   base: './',
   plugins: [react()],
   envPrefix: ["VITE_", "TAURI_"],
+  resolve: {
+    alias: {
+      '@tauri-apps/api': path.resolve(__dirname, './src/tauri-api-mock.js'),
+    },
+  },
+  optimizeDeps: {
+    exclude: ['@tauri-apps/api'],
+  },
   build: {
     outDir: 'dist',
     assetsInlineLimit: 0,

@@ -1,7 +1,7 @@
-import { invoke } from "@tauri-apps/api/core";
+import { invoke } from "@tauri-apps/api";
 
 // Check if running in Tauri environment
-const isTauri = typeof window !== "undefined" && window.__TAURI_IPC__;
+const isTauri = typeof window !== "undefined" && window.__TAURI__;
 
 // Helper function to use either Tauri or localStorage
 export const useStorage = {
