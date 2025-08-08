@@ -5,53 +5,51 @@ import { relaunch } from "@tauri-apps/plugin-process";
 import { ask } from "@tauri-apps/plugin-dialog";
 
 const UpdateManager = () => {
-  const { translate } = useLanguage();
-
-  useEffect(() => {
     const checkForUpdates = async () => {
       try {
-        // Using static imports for Tauri v2 APIs
-
+        // Dynamically import Tauri v1 APIs
+         const { checkUpdate } = await import('@tauri-apps/api/updater');
+         const { relaunch } = await import('@tauri-apps/api/process');
+         const { ask } = await import('@tauri-apps/api/dialog');
         console.log("Checking for updates...");
-        const update = await check();
-
-        if (update) {
-          console.log("Found update:", {
-            version: update.version,
-            date: update.date,
-            body: update.body,
-          });
-
+        const { shouldUpdate, manifest } = await checkUpdate();
+        
+        if (shouldUpdate) {
+          console.log('Found update:', manifest.version);
+          
           // Silent update - download and install without user interaction
           try {
-            console.log("Starting update download...");
-
-            // Download and install the update
-            let downloaded = 0;
-            let contentLength = 0;
-
-            await update.downloadAndInstall((event) => {
-              switch (event.event) {
-                case "Started":
-                  contentLength = event.data.contentLength || 0;
-                  console.log(
-                    `Started downloading ${event.data.contentLength} bytes`,
-                  );
-                  break;
-                case "Progress":
-                  downloaded += event.data.chunkLength || 0;
-                  const progress =
-                    contentLength > 0 ? (downloaded / contentLength) * 100 : 0;
-                  console.log(`Download progress: ${progress.toFixed(1)}%`);
-                  break;
-                case "Finished":
-                  console.log("Download completed");
-                  break;
+            await manifest.downloadAndInstall();
+            console.log('Update installed successfully');
+            
+            // Ask to restart (this can also be automatic)
+            const shouldRestart = await ask(
+              translate('Update installed successfully. Restart now?'),
+              {
+                title: translate('Update Available'),
+                type: 'info',
+                okLabel: translate('Restart Now'),
+                cancelLabel: translate('Later'),
               }
-            });
+            );
+            
+            if (shouldRestart) {
+              await relaunch();
+            }
+          } catch (downloadError) {
+            console.error('Failed to download update:', downloadError);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to check for updates:', error);
+      }
+    };
+                  console.log("Download completed");
+    // Check for updates on app start and every 4 hours
+    checkForUpdates();
+    const interval = setInterval(checkForUpdates, 4 * 60 * 60 * 1000); // 4 hours
 
-            console.log("Update installed successfully");
-
+    return () => clearInterval(interval);
             // Ask to restart (this can also be automatic)
             const shouldRestart = await ask(
               translate("Update installed successfully. Restart now?"),
