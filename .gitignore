@@ -7,18 +7,94 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+dist/
+dist-ssr/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Tauri specific
+target/
+src-tauri/target/
+src-tauri/WixTools/
+*.exe
+*.msi
+*.dmg
+*.app
+*.deb
+*.rpm
+*.AppImage
+
+# Security keys and certificates
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+updater_private.pem
+updater_public.pem
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Vercel
+.vercel/
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist/
+.serverless/
+.fusebox/
+.dynamodb/
+
+# Testing
+coverage/
+*.lcov
+.nyc_output
+TAURI_V2_UPDATE_SETUP.md
+test-updater.js
+SETUP_COMPLETE.md
+
+# Misc
+*.local
+key
+key.pub

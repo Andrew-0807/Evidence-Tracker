@@ -3,38 +3,24 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   root: './',
   base: './',
-  plugins: [
-    react(),
-
-  ],
+  plugins: [react()],
   envPrefix: ["VITE_", "TAURI_"],
   build: {
+    outDir: 'dist',
     assetsInlineLimit: 0,
     cssCodeSplit: false,
-
-    // **CONDITIONAL TARGET PROPERTY (KEY CHANGE)**
-    target: 'es2021',
-
+    target: 'es2020',
     minify: !process.env.TAURI_DEBUG ? "esbuild" : false,
     sourcemap: !!process.env.TAURI_DEBUG,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   },
-
   server: {
     host: true,
     strictPort: true,
     port: 5173,
-    middleware: [
-      (req, res, next) => {
-        if (req.url.startsWith("/src")) {
-          res.setHeader(
-            "Content-Security-Policy",
-            "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'",
-          );
-          next();
-        } else {
-          next();
-        }
-      },
-    ],
   },
 });

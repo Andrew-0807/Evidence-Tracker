@@ -61,16 +61,16 @@ const AppContent = () => {
 
         console.error(
           translate(
-            "Failed to load tag configuration. Please ensure tags.json is available."
+            "Failed to load tag configuration. Please ensure tags.json is available.",
           ),
-          err
+          err,
         );
         setAvailableTags([]);
         setTagColors({});
         setError(
           translate(
-            "Failed to load tag configuration. Please ensure tags.json is available."
-          )
+            "Failed to load tag configuration. Please ensure tags.json is available.",
+          ),
         );
       }
     };
@@ -119,7 +119,7 @@ const AppContent = () => {
                 ...response.entries.map((entry) => ({
                   ...entry,
                   date: dateString,
-                }))
+                })),
               );
             }
           } catch (_) {
@@ -182,7 +182,7 @@ const AppContent = () => {
 
   const totalAmount = useMemo(
     () => entries.reduce((sum, entry) => sum + entry.value, 0),
-    [entries]
+    [entries],
   );
 
   // ---------- Actions ----------
@@ -241,8 +241,8 @@ const AppContent = () => {
     if (
       !window.confirm(
         translate(
-          "Are you sure you want to lock this day? This cannot be undone."
-        )
+          "Are you sure you want to lock this day? This cannot be undone.",
+        ),
       )
     )
       return;
@@ -258,10 +258,7 @@ const AppContent = () => {
   };
 
   // ---------- Save tags ----------
-  const saveTagsToFile = async (
-    updatedTags,
-    updatedColors
-  ) => {
+  const saveTagsToFile = async (updatedTags, updatedColors) => {
     try {
       const tagConfig = {
         available_tags: updatedTags,
@@ -315,7 +312,7 @@ const AppContent = () => {
   const handleRemoveTag = async (tagToRemove) => {
     if (
       !window.confirm(
-        `Are you sure you want to remove the tag "${tagToRemove}"? This will affect all entries using this tag.`
+        `Are you sure you want to remove the tag "${tagToRemove}"? This will affect all entries using this tag.`,
       )
     )
       return;
@@ -339,7 +336,7 @@ const AppContent = () => {
 
     const maxEntries = Math.max(
       ...Object.values(groupedByTag).map((arr) => arr.length),
-      0
+      0,
     );
 
     const rows = [];
@@ -356,7 +353,7 @@ const AppContent = () => {
     availableTags.forEach((tag) => {
       const sum = groupedByTag[tag].reduce(
         (acc, e) => acc + Number(e.value || 0),
-        0
+        0,
       );
       totals[tag] = sum.toFixed(2);
     });

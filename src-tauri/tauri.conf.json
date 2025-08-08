@@ -1,57 +1,47 @@
 {
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "productName": "Evidence Tracker",
+  "version": "1.0.4",
+  "identifier": "com.evidencetracker.app",
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:5173",
-    "distDir": "../dist"
+    "devUrl": "http://localhost:5173",
+    "frontendDist": "../dist"
   },
-  "package": {
-    "productName": "Evidence Tracker",
-    "version": "1.0.2"
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
   },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "fs": {
-        "copyFile": true,
-        "createDir": true,
-        "readFile": true,
-        "writeFile": true,
-        "scope": ["$APPDATA/*"]
-      },
-      "path": {
-        "all": true
-      },
-      "dialog": {
-        "open": true,
-        "save": true
-      },
-      "notification": {
-        "all": true
-      },
-      "shell": {
-        "open": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.evidencetracker.app",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ]
-    },
-    "security": {
-      "csp": null
-    },
+  "plugins": {
     "updater": {
       "active": true,
       "endpoints": [
-        "https://api.github.com/repos/YOUR_USERNAME/evidence-tracker/releases/latest"
+        "https://api.github.com/repos/Andrew-0807/Evidence-Tracker/releases/latest"
       ],
       "dialog": false,
-      "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnBSqFP97eMIqJCdjl5XKZGgAR05FOSYM2pNQSeoLsIqR6A3CaUnv3oYF6Rhvw4xmnal+Riu0i1CqoeusHVFA8yozUPu3xlM+CwjS/2ZFwBvEJgNMp34lM1gGi3NTc7F4hlVlzyLxvc6szOxilUni5Dwwrxmru82GjlwE2Np
+      "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnBSqFP97eMIqJCdjl5XKZGgAR05FOSYM2pNQSeoLsIqR6A3CaUnv3oYF6Rhvw4xmnal+Riu0i1CqoeusHVFA8yozUPu3xlM+CwjS/2ZFwBvEJgNMp34lM1gGi3NTc7F4hlVlzyLxvc6szOxilUni5Dwwrxmru82GjlwE2NpbT+i5BiGTPkik7Ckw3oIDS/REuymyDOzzQ6F0PkbwmMzVcqwgulloUP71JNe28dlG8Yd7KmyRjEBY87BeMBLvOMW30M69DjsCSQuzEjG0KX9auYGWL4oJKSHMfnSCPkiISFh4DE3QTCLOBmW6BRG7yF+d6vRLmfOb07EmMDRWrLZUPwIDAQAB"
+    }
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Evidence Tracker",
+        "width": 800,
+        "height": 600,
+        "fullscreen": false,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  }
+}

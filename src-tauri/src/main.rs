@@ -7,7 +7,7 @@ use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use rusqlite::{Connection, params};
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Manager, State};
+use tauri::{AppHandle, Manager, State, Emitter};
 use dirs::config_dir;
 use notify::{Event, EventKind, RecommendedWatcher, RecursiveMode, Watcher};
 
@@ -318,8 +318,8 @@ fn get_tag_config(_app_handle: AppHandle) -> Result<TagConfig, String> {
 }
 
 fn setup_file_watcher(app_handle: AppHandle) -> Result<RecommendedWatcher, String> {
-    let watch_path = app_handle.path_resolver().resource_dir()
-        .ok_or_else(|| "Failed to resolve resource path".to_string())?;
+    let watch_path = app_handle.path().resource_dir()
+        .map_err(|e| format!("Failed to resolve resource path: {}", e))?;
 
     // Ensure the directory exists
     fs::create_dir_all(&watch_path).map_err(|e| format!("Failed to create resource directory: {}", e))?;
@@ -335,7 +335,7 @@ fn setup_file_watcher(app_handle: AppHandle) -> Result<RecommendedWatcher, Strin
                             println!("Tags file changed, notifying frontend...");
 
                             // Emit event to frontend
-                            if let Some(window) = app_handle_clone.get_window("main") {
+                            if let Some(window) = app_handle_clone.get_webview_window("main") {
                                 let _ = window.emit("tags-config-changed", ());
                             }
                         }
@@ -438,6 +438,12 @@ fn get_database_path(app_handle: &AppHandle) -> Result<PathBuf, String> {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_process::init())
         .setup(|app| {
             let db_path = get_database_path(&app.handle())?;
             println!("DEBUG: Database path: {:?}", db_path);
@@ -456,7 +462,7 @@ fn main() {
             app.manage(database);
 
             // Setup file watcher
-            let watcher = setup_file_watcher(app.handle())
+            let watcher = setup_file_watcher(app.handle().clone())
                 .map_err(|e| format!("Failed to setup file watcher: {}", e))?;
 
             let file_watcher = FileWatcher {

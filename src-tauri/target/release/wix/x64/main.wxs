@@ -18,7 +18,7 @@
             UpgradeCode="e68b76e6-86eb-529f-85d3-5fbda03b5920"
             Language="!(loc.TauriLanguage)"
             Manufacturer="evidencetracker"
-            Version="1.0.2">
+            Version="1.0.4">
 
         <Package Id="*"
                  Keywords="Installer"
@@ -50,6 +50,7 @@
         <Property Id="ARPPRODUCTICON" Value="ProductIcon" />
         <Property Id="ARPNOREPAIR" Value="yes" Secure="yes" />      <!-- Remove repair -->
         <SetProperty Id="ARPNOMODIFY" Value="1" After="InstallValidate" Sequence="execute"/>
+
 
         <!-- initialize with previous InstallDir -->
         <Property Id="INSTALLDIR">
@@ -103,10 +104,11 @@
                 <RegistryKey Root="HKCU" Key="Software\evidencetracker\Evidence Tracker">
                     <RegistryValue Name="InstallDir" Type="string" Value="[INSTALLDIR]" KeyPath="yes" />
                 </RegistryKey>
-            </Component>
+                <!-- Change the Root to HKCU for perUser installations -->
+</Component>
             <Component Id="Path" Guid="ac425066-df07-5c65-8687-4b2f06505fd5" Win64="$(var.Win64)">
-                <File Id="Path" Source="D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\release\Evidence Tracker.exe" KeyPath="yes" Checksum="yes"/>
-            </Component>
+                <File Id="Path" Source="D:\Proiecte Andrei 2025\tauri\Evidence Tracker\src-tauri\target\release\evidence-tracker.exe" KeyPath="yes" Checksum="yes"/>
+</Component>
             
             <Component Id="CMP_UninstallShortcut" Guid="*">
 
@@ -197,9 +199,8 @@
 
 
 
-
         <InstallExecuteSequence>
-            <Custom Action="LaunchApplication" After="InstallFinalize">AUTOLAUNCHAPP AND NOT Installed</Custom>
+          <Custom Action="LaunchApplication" After="InstallFinalize">AUTOLAUNCHAPP AND NOT Installed</Custom>
         </InstallExecuteSequence>
 
         <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLDIR]" After="CostFinalize"/>

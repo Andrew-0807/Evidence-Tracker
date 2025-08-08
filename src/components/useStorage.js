@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 
 // Check if running in Tauri environment
 const isTauri = typeof window !== "undefined" && window.__TAURI_IPC__;
