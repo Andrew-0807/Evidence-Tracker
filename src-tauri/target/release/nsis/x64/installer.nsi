@@ -30,8 +30,8 @@ ${StrLoc}
 
 !define MANUFACTURER "evidencetracker"
 !define PRODUCTNAME "Evidence Tracker"
-!define VERSION "1.0.4"
-!define VERSIONWITHBUILD "1.0.4.0"
+!define VERSION "1.0.7"
+!define VERSIONWITHBUILD "1.0.7.0"
 !define HOMEPAGE ""
 !define INSTALLMODE "currentUser"
 !define LICENSE ""
@@ -55,7 +55,7 @@ ${StrLoc}
 !define UNINSTKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCTNAME}"
 !define MANUPRODUCTKEY "Software\${MANUFACTURER}\${PRODUCTNAME}"
 !define UNINSTALLERSIGNCOMMAND ""
-!define ESTIMATEDSIZE "18690"
+!define ESTIMATEDSIZE "18683"
 !define STARTMENUFOLDER ""
 
 Var PassiveMode

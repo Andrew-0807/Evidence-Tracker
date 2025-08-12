@@ -90,11 +90,15 @@ Thumbs.db
 coverage/
 *.lcov
 .nyc_output
-TAURI_V2_UPDATE_SETUP.md
-test-updater.js
-SETUP_COMPLETE.md
 
 # Misc
 *.local
 key
 key.pub
+
+# Tauri Update Files
+TAURI_V2_UPDATE_SETUP.md
+test-updater.js
+SETUP_COMPLETE.md
+updater_public.pem
+updater_private.pem

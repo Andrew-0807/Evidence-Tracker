@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "productName": "Evidence Tracker",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "identifier": "com.evidencetracker.app",
   "build": {
     "beforeDevCommand": "npm run dev",
