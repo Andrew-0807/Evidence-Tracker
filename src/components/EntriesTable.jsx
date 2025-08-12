@@ -50,7 +50,7 @@ const EntriesTable = ({
 
   return (
     <div
-      className={`mt-8 rounded-xl shadow-md border overflow-hidden transition-colors duration-300 ${
+      className={`mt-8 rounded-xl shadow-md border overflow-hidden transition-colors duration-300 animate-fade-in ${
         isDarkMode
           ? "bg-slate-800 border-slate-700"
           : "bg-white border-slate-200"

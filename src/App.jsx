@@ -368,7 +368,7 @@ const AppContent = () => {
   // ---------- Premium background + layout ----------
   return (
     <div
-      className={`relative min-h-screen transition-colors duration-300 ${
+      className={`relative min-h-screen transition-colors duration-300 animate-fade-in ${
         isDarkMode
           ? "bg-slate-950"
           : "bg-gradient-to-br from-slate-50 via-indigo-50 to-white"

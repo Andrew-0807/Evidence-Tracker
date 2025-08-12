@@ -128,7 +128,7 @@ const Overview = ({
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 ${
+      className={`min-h-screen transition-colors duration-300 animate-fade-in ${
         isDarkMode
           ? "bg-gradient-to-br from-slate-900 to-slate-800"
           : "bg-gradient-to-br from-slate-50 to-indigo-50"
