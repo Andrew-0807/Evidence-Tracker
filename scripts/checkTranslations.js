@@ -1,5 +1,11 @@
-const fs = require("fs");
-const path = require("path");
+// Node ESM script to verify translation keys
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import process from "process";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Directories & files
 const SRC_DIR = path.join(__dirname, "..", "src");

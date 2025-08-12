@@ -17,7 +17,7 @@ export const updater = {
 };
 
 export const dialog = {
-  ask: async (message, options) => {
+  ask: async (message) => {
     console.warn(`Mocked dialog.ask called with message: ${message}`);
     return false; // Default to 'cancel' for mock
   },
