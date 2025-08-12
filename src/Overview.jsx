@@ -4,6 +4,7 @@ import OverviewSidebar from "./components/OverviewSidebar";
 import { useLanguage } from "./localization/LanguageContext";
 import { useTheme } from "./components/ThemeProvider";
 import MonthlySummary from "./components/MonthlySummary";
+import CustomSums from "./components/CustomSums";
 
 const Overview = ({
   tagColors = {},
@@ -206,6 +207,11 @@ const Overview = ({
               selectedMonth={selectedMonth}
             />
           )}
+
+          <CustomSums
+            monthlyData={monthlyData}
+            availableTags={availableTags}
+          />
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Month Selector Sidebar */}

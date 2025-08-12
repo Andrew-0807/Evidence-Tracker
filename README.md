@@ -171,6 +171,10 @@ The SQLite database is stored at:
    - Monthly comparison
    - Color-coded categories
 
+### Custom Sums
+
+Define up to five-tag formulas that sum or subtract tag totals for the selected month. The Custom Sums panel lives in Overview directly beneath the first chart and stores data in `custom_sums.json` in the app config directory (or browser localStorage for web builds).
+
 ## File Structure
 
 ```

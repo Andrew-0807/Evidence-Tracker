@@ -6,11 +6,7 @@ const EntriesTable = ({
   isLoading,
   entries,
   selectedDate,
-  availableTags,
-  tableData,
   getTagColor,
-  isLocked,
-  totalAmount,
 }) => {
   const { isDarkMode } = useTheme();
   const { translate } = useLanguage();
