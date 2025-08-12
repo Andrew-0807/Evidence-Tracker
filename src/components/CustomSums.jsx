@@ -8,6 +8,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
   const [sums, setSums] = useState([]);
   const [form, setForm] = useState(null);
   const [dragIndex, setDragIndex] = useState(null);
+  const [ctrlPressed, setCtrlPressed] = useState(false);
   const { translate } = useLanguage();
   const { isDarkMode } = useTheme();
 
@@ -23,6 +24,18 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
       }
     };
     load();
+  }, []);
+
+  // Detect Control key for showing card actions
+  useEffect(() => {
+    const down = (e) => e.key === "Control" && setCtrlPressed(true);
+    const up = (e) => e.key === "Control" && setCtrlPressed(false);
+    window.addEventListener("keydown", down);
+    window.addEventListener("keyup", up);
+    return () => {
+      window.removeEventListener("keydown", down);
+      window.removeEventListener("keyup", up);
+    };
   }, []);
 
   // Persist helper
@@ -148,10 +161,10 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2
-          className={`text-xl font-semibold ${
+          className={`text-2xl font-bold ${
             isDarkMode ? "text-slate-100" : "text-slate-800"
           }`}
         >
@@ -159,7 +172,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
         </h2>
         <button
           onClick={handleAdd}
-          className="px-3 py-1 rounded bg-indigo-600 text-white text-sm"
+          className="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm shadow hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           {translate("Add")}
         </button>
@@ -169,7 +182,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
           {translate("No custom sums yet")}
         </p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {sums
             .sort((a, b) => a.position - b.position)
             .map((sum, idx) => (
@@ -179,38 +192,38 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                 onDragStart={() => handleDragStart(idx)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(idx)}
-                className={`p-4 rounded border flex items-center justify-between ${
+                className={`relative p-4 pr-16 rounded-xl border shadow-md cursor-grab active:cursor-grabbing transition-shadow ${
                   isDarkMode
-                    ? "bg-slate-800 border-slate-700"
-                    : "bg-white border-slate-200"
+                    ? "bg-slate-800 border-slate-700 hover:shadow-lg"
+                    : "bg-white border-slate-200 hover:shadow-lg"
                 }`}
               >
-                <div className="flex-1">
-                  <div
-                    className={`font-medium ${
-                      isDarkMode ? "text-slate-100" : "text-slate-800"
-                    }`}
-                  >
-                    {sum.name}
-                  </div>
-                  {sum.note && (
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 pr-2">
                     <div
-                      className={`text-sm ${
-                        isDarkMode ? "text-slate-400" : "text-slate-500"
+                      className={`font-medium ${
+                        isDarkMode ? "text-slate-100" : "text-slate-800"
                       }`}
                     >
-                      {sum.note}
+                      {sum.name}
                     </div>
-                  )}
-                  <div
-                    className={`text-sm ${
-                      isDarkMode ? "text-slate-300" : "text-slate-600"
-                    }`}
-                  >
-                    {formulaString(sum.items)}
+                    {sum.note && (
+                      <div
+                        className={`text-sm ${
+                          isDarkMode ? "text-slate-400" : "text-slate-500"
+                        }`}
+                      >
+                        {sum.note}
+                      </div>
+                    )}
+                    <div
+                      className={`text-sm ${
+                        isDarkMode ? "text-slate-300" : "text-slate-600"
+                      }`}
+                    >
+                      {formulaString(sum.items)}
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center space-x-2">
                   <div
                     className={`text-right font-semibold ${
                       isDarkMode ? "text-slate-100" : "text-slate-800"
@@ -218,23 +231,80 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                   >
                     {(computedValues[sum.id] || 0).toFixed(2)}
                   </div>
+                </div>
+                <div
+                  className={`absolute top-2 right-2 flex space-x-1 transition-opacity ${
+                    ctrlPressed ? "opacity-100" : "opacity-0 pointer-events-none"
+                  }`}
+                >
                   <button
                     onClick={() => handleEdit(sum)}
-                    className="text-sm text-blue-500"
+                    className={`p-1 rounded-md ${
+                      isDarkMode
+                        ? "text-slate-300 hover:bg-slate-700"
+                        : "text-slate-600 hover:bg-slate-200"
+                    }`}
                   >
-                    {translate("Edit")}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                      />
+                    </svg>
                   </button>
                   <button
                     onClick={() => handleDuplicate(sum)}
-                    className="text-sm text-purple-500"
+                    className={`p-1 rounded-md ${
+                      isDarkMode
+                        ? "text-slate-300 hover:bg-slate-700"
+                        : "text-slate-600 hover:bg-slate-200"
+                    }`}
                   >
-                    {translate("Duplicate")}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                      />
+                    </svg>
                   </button>
                   <button
                     onClick={() => handleDelete(sum.id)}
-                    className="text-sm text-red-500"
+                    className={`p-1 rounded-md ${
+                      isDarkMode
+                        ? "text-slate-300 hover:bg-slate-700"
+                        : "text-slate-600 hover:bg-slate-200"
+                    }`}
                   >
-                    {translate("Delete")}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      />
+                    </svg>
                   </button>
                 </div>
               </li>
@@ -323,10 +393,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                 </div>
               ))}
               {form.items.length < 5 && (
-                <button
-                  onClick={addSlot}
-                  className="text-sm text-indigo-600"
-                >
+                <button onClick={addSlot} className="text-sm text-indigo-600">
                   {translate("Add Slot")}
                 </button>
               )}
