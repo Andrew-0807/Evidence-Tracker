@@ -393,10 +393,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                 </div>
               ))}
               {form.items.length < 5 && (
-                <button
-                  onClick={addSlot}
-                  className="text-sm text-indigo-600"
-                >
+                <button onClick={addSlot} className="text-sm text-indigo-600">
                   {translate("Add Slot")}
                 </button>
               )}
