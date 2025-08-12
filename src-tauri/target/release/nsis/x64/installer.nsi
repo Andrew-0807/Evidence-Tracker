@@ -30,8 +30,8 @@ ${StrLoc}
 
 !define MANUFACTURER "evidencetracker"
 !define PRODUCTNAME "Evidence Tracker"
-!define VERSION "1.0.7"
-!define VERSIONWITHBUILD "1.0.7.0"
+!define VERSION "1.0.8"
+!define VERSIONWITHBUILD "1.0.8.0"
 !define HOMEPAGE ""
 !define INSTALLMODE "currentUser"
 !define LICENSE ""
