@@ -18,7 +18,7 @@
             UpgradeCode="e68b76e6-86eb-529f-85d3-5fbda03b5920"
             Language="!(loc.TauriLanguage)"
             Manufacturer="evidencetracker"
-            Version="1.0.4">
+            Version="1.0.7">
 
         <Package Id="*"
                  Keywords="Installer"

@@ -182,7 +182,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
           {translate("No custom sums yet")}
         </p>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {sums
             .sort((a, b) => a.position - b.position)
             .map((sum, idx) => (
@@ -192,11 +192,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                 onDragStart={() => handleDragStart(idx)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(idx)}
-                className={`relative p-4 pr-16 rounded-xl border shadow-md cursor-grab active:cursor-grabbing transition-shadow ${
-                  isDarkMode
-                    ? "bg-slate-800 border-slate-700 hover:shadow-lg"
-                    : "bg-white border-slate-200 hover:shadow-lg"
-                }`}
+                className={`relative p-4 pr-16 rounded-xl border shadow-md cursor-grab active:cursor-grabbing transition-all duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 ${isDarkMode ? "bg-slate-800 border-slate-700 hover:shadow-lg" : "bg-white border-slate-200 hover:shadow-lg"}`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1 pr-2">
