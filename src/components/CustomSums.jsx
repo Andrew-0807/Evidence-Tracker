@@ -27,7 +27,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
     load();
   }, []);
 
-  // Detect Control key for showing card actions
+  // Detect Control key for showing card actions„
   useEffect(() => {
     const down = (e) => e.key === "Control" && setCtrlPressed(true);
     const up = (e) => e.key === "Control" && setCtrlPressed(false);
@@ -104,7 +104,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
   // Editor logic
   const closeEditor = () => setForm(null);
 
-  // Add slot with validations (resolved)
+  // Add slot with validations
   const addSlot = () =>
     setForm((f) => {
       if (availableTags.length === 0) {
@@ -196,6 +196,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
           {translate("Add")}
         </button>
       </div>
+
       {sums.length === 0 ? (
         <p className={isDarkMode ? "text-slate-400" : "text-slate-500"}>
           {translate("No custom sums yet")}
@@ -251,6 +252,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                     {(computedValues[sum.id] || 0).toFixed(2)}
                   </div>
                 </div>
+
                 <div
                   className={`absolute top-2 right-2 flex space-x-1 transition-opacity duration-200 ${
                     ctrlPressed ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -266,7 +268,6 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                     aria-label={translate("Edit")}
                     title={translate("Edit")}
                   >
-                    {/* edit icon */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -282,6 +283,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                       />
                     </svg>
                   </button>
+
                   <button
                     onClick={() => handleDuplicate(sum)}
                     className={`p-1 rounded-md transition-colors duration-200 ${
@@ -292,7 +294,6 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                     aria-label={translate("Duplicate")}
                     title={translate("Duplicate")}
                   >
-                    {/* duplicate icon */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -308,6 +309,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                       />
                     </svg>
                   </button>
+
                   <button
                     onClick={() => handleDelete(sum.id)}
                     className={`p-1 rounded-md transition-colors duration-200 ${
@@ -318,7 +320,6 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                     aria-label={translate("Delete")}
                     title={translate("Delete")}
                   >
-                    {/* delete icon */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
