@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useStorage } from "./useStorage";
 import { useLanguage } from "../localization/LanguageContext";
 import { useTheme } from "./ThemeProvider";
@@ -11,6 +11,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
   const [ctrlPressed, setCtrlPressed] = useState(false);
   const { translate } = useLanguage();
   const { isDarkMode } = useTheme();
+  const overlayRef = useRef(null);
 
   // Load persisted sums on mount
   useEffect(() => {
@@ -37,6 +38,17 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
       window.removeEventListener("keyup", up);
     };
   }, []);
+
+  // Focus modal and prevent background scroll when open
+  useEffect(() => {
+    if (!form) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    overlayRef.current?.focus();
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [form]);
 
   // Persist helper
   const persist = async (list) => {
@@ -91,6 +103,8 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
 
   // Editor logic
   const closeEditor = () => setForm(null);
+
+  // Add slot with validations (resolved)
   const addSlot = () =>
     setForm((f) => {
       if (availableTags.length === 0) {
@@ -106,12 +120,14 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
         ],
       };
     });
+
   const updateItem = (idx, field, val) =>
     setForm((f) => {
       const items = [...f.items];
       items[idx] = { ...items[idx], [field]: val };
       return { ...f, items };
     });
+
   const removeSlot = (idx) =>
     setForm((f) => ({
       ...f,
@@ -247,8 +263,24 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                         ? "text-slate-300 hover:bg-slate-700"
                         : "text-slate-600 hover:bg-slate-200"
                     }`}
+                    aria-label={translate("Edit")}
+                    title={translate("Edit")}
                   >
                     {/* edit icon */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                      />
+                    </svg>
                   </button>
                   <button
                     onClick={() => handleDuplicate(sum)}
@@ -257,8 +289,24 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                         ? "text-slate-300 hover:bg-slate-700"
                         : "text-slate-600 hover:bg-slate-200"
                     }`}
+                    aria-label={translate("Duplicate")}
+                    title={translate("Duplicate")}
                   >
                     {/* duplicate icon */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                      />
+                    </svg>
                   </button>
                   <button
                     onClick={() => handleDelete(sum.id)}
@@ -267,8 +315,24 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                         ? "text-slate-300 hover:bg-slate-700"
                         : "text-slate-600 hover:bg-slate-200"
                     }`}
+                    aria-label={translate("Delete")}
+                    title={translate("Delete")}
                   >
                     {/* delete icon */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      />
+                    </svg>
                   </button>
                 </div>
               </li>
@@ -277,16 +341,48 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
       )}
 
       {form && (
-        <dialog
-          open
-          className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 animate-fade-in"
+        <div
+          ref={overlayRef}
+          tabIndex="-1"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in"
         >
           <div
             className={`max-w-md w-full rounded p-6 animate-fade-in ${
               isDarkMode ? "bg-slate-800" : "bg-white"
             }`}
           >
-            <form className="space-y-4">
+            <h3
+              className={`text-lg font-medium mb-4 ${
+                isDarkMode ? "text-slate-100" : "text-slate-800"
+              }`}
+            >
+              {form.id ? translate("Edit Sum") : translate("Add Sum")}
+            </h3>
+
+            <div className="space-y-3">
+              <input
+                className={`w-full p-2 rounded border ${
+                  isDarkMode
+                    ? "bg-slate-700 border-slate-600 text-slate-100"
+                    : "bg-white border-slate-300"
+                }`}
+                placeholder={translate("Name")}
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
+              <input
+                className={`w-full p-2 rounded border ${
+                  isDarkMode
+                    ? "bg-slate-700 border-slate-600 text-slate-100"
+                    : "bg-white border-slate-300"
+                }`}
+                placeholder={translate("Note (optional)")}
+                value={form.note || ""}
+                onChange={(e) =>
+                  setForm({ ...form, note: e.target.value.slice(0, 60) })
+                }
+              />
+
               {form.items.map((it, idx) => (
                 <div key={idx} className="flex items-center space-x-2">
                   <select
@@ -310,14 +406,11 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                       ))
                     )}
                   </select>
+
                   <select
                     value={it.op}
                     onChange={(e) =>
-                      updateItem(
-                        idx,
-                        "op",
-                        e.target.value === "-1" ? -1 : 1
-                      )
+                      updateItem(idx, "op", e.target.value === "-1" ? -1 : 1)
                     }
                     className={`px-2 py-1 border rounded ${
                       isDarkMode
@@ -328,6 +421,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                     <option value={1}>+</option>
                     <option value={-1}>-</option>
                   </select>
+
                   <button
                     type="button"
                     onClick={() => removeSlot(idx)}
@@ -356,31 +450,46 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                   type="button"
                   onClick={addSlot}
                   disabled={form.items.length >= 5 || availableTags.length === 0}
-                  className={`px-3 py-1 rounded text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className="px-3 py-1 rounded text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {translate("Add Slot")}
                 </button>
               </div>
 
-              <div className="flex justify-end space-x-2 pt-4">
-                <button
-                  type="button"
-                  onClick={closeEditor}
-                  className="px-4 py-2 rounded bg-slate-500 text-white text-sm"
-                >
-                  {translate("Cancel")}
-                </button>
-                <button
-                  type="button"
-                  onClick={saveForm}
-                  className="px-4 py-2 rounded bg-green-600 text-white text-sm"
-                >
-                  {translate("Save")}
-                </button>
+              <div
+                className={`text-sm ${
+                  isDarkMode ? "text-slate-300" : "text-slate-600"
+                }`}
+              >
+                {translate("Formula")}: {formulaString(form.items)}
               </div>
-            </form>
+              <div
+                className={`text-sm ${
+                  isDarkMode ? "text-slate-300" : "text-slate-600"
+                }`}
+              >
+                {translate("Value")}: {previewValue.toFixed(2)}
+              </div>
+            </div>
+
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={closeEditor}
+                className="px-4 py-2 rounded bg-slate-500 text-white text-sm"
+              >
+                {translate("Cancel")}
+              </button>
+              <button
+                type="button"
+                onClick={saveForm}
+                className="px-4 py-2 rounded bg-green-600 text-white text-sm"
+              >
+                {translate("Save")}
+              </button>
+            </div>
           </div>
-        </dialog>
+        </div>
       )}
     </div>
   );
