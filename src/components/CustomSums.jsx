@@ -92,17 +92,20 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
   // Editor logic
   const closeEditor = () => setForm(null);
   const addSlot = () =>
-    setForm((f) =>
-      f.items.length >= 5
-        ? f
-        : {
-            ...f,
-            items: [
-              ...f.items,
-              { slot_index: f.items.length, tag: availableTags[0] || "", op: 1 },
-            ],
-          }
-    );
+    setForm((f) => {
+      if (availableTags.length === 0) {
+        alert(translate("Define tags first"));
+        return f;
+      }
+      if (f.items.length >= 5) return f;
+      return {
+        ...f,
+        items: [
+          ...f.items,
+          { slot_index: f.items.length, tag: availableTags[0] || "", op: 1 },
+        ],
+      };
+    });
   const updateItem = (idx, field, val) =>
     setForm((f) => {
       const items = [...f.items];
@@ -283,7 +286,99 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
               isDarkMode ? "bg-slate-800" : "bg-white"
             }`}
           >
-            {/* form fields */}
+            <form className="space-y-4">
+              {form.items.map((it, idx) => (
+                <div key={idx} className="flex items-center space-x-2">
+                  <select
+                    value={it.tag}
+                    onChange={(e) => updateItem(idx, "tag", e.target.value)}
+                    className={`flex-1 px-2 py-1 border rounded ${
+                      isDarkMode
+                        ? "bg-slate-700 border-slate-600 text-slate-100"
+                        : "bg-white border-slate-300 text-slate-900"
+                    }`}
+                  >
+                    {availableTags.length === 0 ? (
+                      <option value="" disabled>
+                        {translate("No tags available")}
+                      </option>
+                    ) : (
+                      availableTags.map((tag) => (
+                        <option key={tag} value={tag}>
+                          {tag}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                  <select
+                    value={it.op}
+                    onChange={(e) =>
+                      updateItem(
+                        idx,
+                        "op",
+                        e.target.value === "-1" ? -1 : 1
+                      )
+                    }
+                    className={`px-2 py-1 border rounded ${
+                      isDarkMode
+                        ? "bg-slate-700 border-slate-600 text-slate-100"
+                        : "bg-white border-slate-300 text-slate-900"
+                    }`}
+                  >
+                    <option value={1}>+</option>
+                    <option value={-1}>-</option>
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => removeSlot(idx)}
+                    className="text-sm text-red-500"
+                  >
+                    {translate("Remove")}
+                  </button>
+                </div>
+              ))}
+
+              {availableTags.length === 0 && (
+                <p className="text-sm text-red-500">
+                  {translate("Define tags first")}
+                </p>
+              )}
+
+              <div className="flex items-center justify-between">
+                <span
+                  className={`font-semibold ${
+                    isDarkMode ? "text-slate-100" : "text-slate-800"
+                  }`}
+                >
+                  {previewValue.toFixed(2)}
+                </span>
+                <button
+                  type="button"
+                  onClick={addSlot}
+                  disabled={form.items.length >= 5 || availableTags.length === 0}
+                  className={`px-3 py-1 rounded text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                  {translate("Add Slot")}
+                </button>
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-4">
+                <button
+                  type="button"
+                  onClick={closeEditor}
+                  className="px-4 py-2 rounded bg-slate-500 text-white text-sm"
+                >
+                  {translate("Cancel")}
+                </button>
+                <button
+                  type="button"
+                  onClick={saveForm}
+                  className="px-4 py-2 rounded bg-green-600 text-white text-sm"
+                >
+                  {translate("Save")}
+                </button>
+              </div>
+            </form>
           </div>
         </dialog>
       )}
