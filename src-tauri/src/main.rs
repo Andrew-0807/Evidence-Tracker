@@ -54,6 +54,23 @@ struct TagConfig {
     tag_colors: HashMap<String, String>,
 }
 
+// Custom sums model persisted as JSON
+#[derive(Debug, Serialize, Deserialize, Clone)]
+struct CustomSumItem {
+    slot_index: i32,
+    tag: String,
+    op: i32,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+struct CustomSumGroup {
+    id: i64,
+    name: String,
+    note: Option<String>,
+    position: i32,
+    items: Vec<CustomSumItem>,
+}
+
 impl Default for TagConfig {
     fn default() -> Self {
         TagConfig {
@@ -396,6 +413,38 @@ fn remove_tag(app_handle: AppHandle, tag: String) -> Result<(), String> {
 }
 
 #[tauri::command]
+fn get_custom_sums(app_handle: AppHandle) -> Result<Vec<CustomSumGroup>, String> {
+    let config_path = get_config_path(&app_handle)?;
+    let sums_file = config_path.join("custom_sums.json");
+
+    if sums_file.exists() {
+        let content = fs::read_to_string(&sums_file)
+            .map_err(|e| format!("Failed to read custom sums file: {}", e))?;
+        let sums: Vec<CustomSumGroup> = serde_json::from_str(&content)
+            .map_err(|e| format!("Failed to parse custom sums file: {}", e))?;
+        Ok(sums)
+    } else {
+        const DEFAULT_CUSTOM_SUMS: &str = include_str!("../resources/custom_sums.json");
+        let sums: Vec<CustomSumGroup> = serde_json::from_str(DEFAULT_CUSTOM_SUMS)
+            .map_err(|e| format!("Failed to parse embedded custom sums: {}", e))?;
+        Ok(sums)
+    }
+}
+
+#[tauri::command]
+fn save_custom_sums(app_handle: AppHandle, sums: Vec<CustomSumGroup>) -> Result<(), String> {
+    let config_path = get_config_path(&app_handle)?;
+    fs::create_dir_all(&config_path)
+        .map_err(|e| format!("Failed to create config directory: {}", e))?;
+    let sums_file = config_path.join("custom_sums.json");
+    let content = serde_json::to_string_pretty(&sums)
+        .map_err(|e| format!("Failed to serialize custom sums: {}", e))?;
+    fs::write(&sums_file, content)
+        .map_err(|e| format!("Failed to write custom sums file: {}", e))?;
+    Ok(())
+}
+
+#[tauri::command]
 fn get_monthly_entries(month: String, state: State<Database>) -> Result<Vec<Entry>, String> {
     let conn = state.conn.lock().map_err(|e| e.to_string())?;
 
@@ -487,6 +536,8 @@ fn main() {
             save_tag_config,
             add_tag,
             remove_tag,
+            get_custom_sums,
+            save_custom_sums,
             get_config_path_cmd
         ])
         .run(tauri::generate_context!())

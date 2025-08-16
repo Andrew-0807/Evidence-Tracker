@@ -130,4 +130,34 @@ export const useStorage = {
     }
     return allEntries;
   },
+
+  async getCustomSums() {
+    if (isTauri) {
+      try {
+        return await invoke("get_custom_sums");
+      } catch (error) {
+        console.warn(
+          "Tauri command failed, falling back to localStorage:",
+          error
+        );
+      }
+    }
+    const raw = localStorage.getItem("custom_sums");
+    return raw ? JSON.parse(raw) : [];
+  },
+
+  async saveCustomSums(sums) {
+    if (isTauri) {
+      try {
+        await invoke("save_custom_sums", { sums });
+        return;
+      } catch (error) {
+        console.warn(
+          "Tauri command failed, falling back to localStorage:",
+          error
+        );
+      }
+    }
+    localStorage.setItem("custom_sums", JSON.stringify(sums));
+  },
 };

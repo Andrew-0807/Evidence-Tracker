@@ -22,7 +22,7 @@ const EntryForm = ({
   const { translate } = useLanguage();
 
   return (
-    <div className="lg:col-span-2 space-y-6">
+    <div className="lg:col-span-2 space-y-6 animate-fade-in">
       {/* Date Selection */}
       <div
         className={`rounded-xl shadow-md border p-6 transition-colors duration-300 ${

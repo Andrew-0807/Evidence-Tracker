@@ -9,7 +9,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
 
   return (
     <header
-      className={`shadow-lg border-b transition-colors duration-300 ${
+      className={`shadow-lg border-b transition-colors duration-300 animate-fade-in ${
         isDarkMode
           ? "bg-slate-800 border-slate-700"
           : "bg-white border-slate-200"

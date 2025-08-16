@@ -9,7 +9,6 @@ const GlobalSearch = ({ entries, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, 300); // 300ms debounce
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
   const inputRef = useRef(null);
   const resultsRef = useRef(null);
 
@@ -100,10 +99,8 @@ const GlobalSearch = ({ entries, onClose }) => {
   const isSearching = searchQuery !== debouncedSearchQuery && searchQuery.trim().length > 0;
 
   useEffect(() => {
-    if (isVisible) {
-      inputRef.current?.focus();
-    }
-  }, [isVisible]);
+    inputRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     setSelectedIndex(0);
