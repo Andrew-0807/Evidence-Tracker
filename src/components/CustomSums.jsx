@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useStorage } from "./useStorage";
 import { useLanguage } from "../localization/LanguageContext";
 import { useTheme } from "./ThemeProvider";
@@ -11,6 +11,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
   const [ctrlPressed, setCtrlPressed] = useState(false);
   const { translate } = useLanguage();
   const { isDarkMode } = useTheme();
+  const overlayRef = useRef(null);
 
   // Load persisted sums on mount
   useEffect(() => {
@@ -26,7 +27,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
     load();
   }, []);
 
-  // Detect Control key for showing card actions
+  // Detect Control key for showing card actions„
   useEffect(() => {
     const down = (e) => e.key === "Control" && setCtrlPressed(true);
     const up = (e) => e.key === "Control" && setCtrlPressed(false);
@@ -37,6 +38,17 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
       window.removeEventListener("keyup", up);
     };
   }, []);
+
+  // Focus modal and prevent background scroll when open
+  useEffect(() => {
+    if (!form) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    overlayRef.current?.focus();
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [form]);
 
   // Persist helper
   const persist = async (list) => {
@@ -91,24 +103,31 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
 
   // Editor logic
   const closeEditor = () => setForm(null);
+
+  // Add slot with validations
   const addSlot = () =>
-    setForm((f) =>
-      f.items.length >= 5
-        ? f
-        : {
-            ...f,
-            items: [
-              ...f.items,
-              { slot_index: f.items.length, tag: availableTags[0] || "", op: 1 },
-            ],
-          }
-    );
+    setForm((f) => {
+      if (availableTags.length === 0) {
+        alert(translate("Define tags first"));
+        return f;
+      }
+      if (f.items.length >= 5) return f;
+      return {
+        ...f,
+        items: [
+          ...f.items,
+          { slot_index: f.items.length, tag: availableTags[0] || "", op: 1 },
+        ],
+      };
+    });
+
   const updateItem = (idx, field, val) =>
     setForm((f) => {
       const items = [...f.items];
       items[idx] = { ...items[idx], [field]: val };
       return { ...f, items };
     });
+
   const removeSlot = (idx) =>
     setForm((f) => ({
       ...f,
@@ -122,8 +141,9 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
       .sort((a, b) => a.slot_index - b.slot_index)
       .map((it, idx) => {
         const tagName = availableTags.includes(it.tag) ? it.tag : "(missing)";
-        const sign = it.op === -1 ? "−" : idx === 0 ? "" : "+";
-        return `${sign}${sign ? " " : ""}${tagName}`.trim();
+        const part = `${tagName}(${it.op === 1 ? "+" : "-"})`;
+        if (idx === 0) return part;
+        return `${it.op === 1 ? "+" : "−"} ${part}`;
       })
       .join(" ");
 
@@ -176,12 +196,13 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
           {translate("Add")}
         </button>
       </div>
+
       {sums.length === 0 ? (
         <p className={isDarkMode ? "text-slate-400" : "text-slate-500"}>
           {translate("No custom sums yet")}
         </p>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {sums
             .sort((a, b) => a.position - b.position)
             .map((sum, idx) => (
@@ -191,7 +212,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                 onDragStart={() => handleDragStart(idx)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(idx)}
-                className={`relative p-4 pr-16 rounded-xl border shadow-md cursor-grab active:cursor-grabbing transition-shadow transition-transform duration-200 ease-out hover:-translate-y-1 animate-fade-in ${
+                className={`relative p-4 pr-16 rounded-xl border shadow-md cursor-grab active:cursor-grabbing transition-all duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 ${
                   isDarkMode
                     ? "bg-slate-800 border-slate-700 hover:shadow-lg"
                     : "bg-white border-slate-200 hover:shadow-lg"
@@ -231,6 +252,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                     {(computedValues[sum.id] || 0).toFixed(2)}
                   </div>
                 </div>
+
                 <div
                   className={`absolute top-2 right-2 flex space-x-1 transition-opacity duration-200 ${
                     ctrlPressed ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -243,6 +265,8 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                         ? "text-slate-300 hover:bg-slate-700"
                         : "text-slate-600 hover:bg-slate-200"
                     }`}
+                    aria-label={translate("Edit")}
+                    title={translate("Edit")}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -259,6 +283,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                       />
                     </svg>
                   </button>
+
                   <button
                     onClick={() => handleDuplicate(sum)}
                     className={`p-1 rounded-md transition-colors duration-200 ${
@@ -266,6 +291,8 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                         ? "text-slate-300 hover:bg-slate-700"
                         : "text-slate-600 hover:bg-slate-200"
                     }`}
+                    aria-label={translate("Duplicate")}
+                    title={translate("Duplicate")}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -282,6 +309,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                       />
                     </svg>
                   </button>
+
                   <button
                     onClick={() => handleDelete(sum.id)}
                     className={`p-1 rounded-md transition-colors duration-200 ${
@@ -289,6 +317,8 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                         ? "text-slate-300 hover:bg-slate-700"
                         : "text-slate-600 hover:bg-slate-200"
                     }`}
+                    aria-label={translate("Delete")}
+                    title={translate("Delete")}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -312,9 +342,10 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
       )}
 
       {form && (
-        <dialog
-          open
-          className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 animate-fade-in"
+        <div
+          ref={overlayRef}
+          tabIndex="-1"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in"
         >
           <div
             className={`max-w-md w-full rounded p-6 animate-fade-in ${
@@ -328,6 +359,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
             >
               {form.id ? translate("Edit Sum") : translate("Add Sum")}
             </h3>
+
             <div className="space-y-3">
               <input
                 className={`w-full p-2 rounded border ${
@@ -351,54 +383,80 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                   setForm({ ...form, note: e.target.value.slice(0, 60) })
                 }
               />
-              {form.items.map((item, idx) => (
+
+              {form.items.map((it, idx) => (
                 <div key={idx} className="flex items-center space-x-2">
-                  <button
-                    onClick={() => updateItem(idx, "op", item.op === 1 ? -1 : 1)}
-                    className={`w-8 h-8 rounded-full border flex items-center justify-center transition-colors duration-200 ${
-                      item.op === 1
-                        ? isDarkMode
-                          ? "bg-green-600 border-green-700 text-white"
-                          : "bg-green-500 border-green-600 text-white"
-                        : isDarkMode
-                          ? "bg-red-600 border-red-700 text-white"
-                          : "bg-red-500 border-red-600 text-white"
-                    }`}
-                  >
-                    {item.op === 1 ? "+" : "−"}
-                  </button>
                   <select
-                    value={item.tag}
+                    value={it.tag}
                     onChange={(e) => updateItem(idx, "tag", e.target.value)}
-                    className={`flex-1 p-2 rounded border ${
+                    className={`flex-1 px-2 py-1 border rounded ${
                       isDarkMode
                         ? "bg-slate-700 border-slate-600 text-slate-100"
-                        : "bg-white border-slate-300"
+                        : "bg-white border-slate-300 text-slate-900"
                     }`}
                   >
-                    <option value=""></option>
-                    {availableTags.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
+                    {availableTags.length === 0 ? (
+                      <option value="" disabled>
+                        {translate("No tags available")}
                       </option>
-                    ))}
+                    ) : (
+                      availableTags.map((tag) => (
+                        <option key={tag} value={tag}>
+                          {tag}
+                        </option>
+                      ))
+                    )}
                   </select>
+
+                  <select
+                    value={it.op}
+                    onChange={(e) =>
+                      updateItem(idx, "op", e.target.value === "-1" ? -1 : 1)
+                    }
+                    className={`px-2 py-1 border rounded ${
+                      isDarkMode
+                        ? "bg-slate-700 border-slate-600 text-slate-100"
+                        : "bg-white border-slate-300 text-slate-900"
+                    }`}
+                  >
+                    <option value={1}>+</option>
+                    <option value={-1}>-</option>
+                  </select>
+
                   <button
+                    type="button"
                     onClick={() => removeSlot(idx)}
-                    className="text-red-500 text-sm transition-colors duration-200 hover:text-red-700"
+                    className="text-sm text-red-500"
                   >
                     {translate("Remove")}
                   </button>
                 </div>
               ))}
-              {form.items.length < 5 && (
+
+              {availableTags.length === 0 && (
+                <p className="text-sm text-red-500">
+                  {translate("Define tags first")}
+                </p>
+              )}
+
+              <div className="flex items-center justify-between">
+                <span
+                  className={`font-semibold ${
+                    isDarkMode ? "text-slate-100" : "text-slate-800"
+                  }`}
+                >
+                  {previewValue.toFixed(2)}
+                </span>
                 <button
+                  type="button"
                   onClick={addSlot}
-                  className="text-sm text-indigo-600 transition-colors duration-200 hover:text-indigo-800"
+                  disabled={form.items.length >= 5 || availableTags.length === 0}
+                  className="px-3 py-1 rounded text-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {translate("Add Slot")}
                 </button>
-              )}
+              </div>
+
               <div
                 className={`text-sm ${
                   isDarkMode ? "text-slate-300" : "text-slate-600"
@@ -414,35 +472,25 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
                 {translate("Value")}: {previewValue.toFixed(2)}
               </div>
             </div>
+
             <div className="mt-4 flex justify-end space-x-2">
               <button
+                type="button"
                 onClick={closeEditor}
-                className={`px-3 py-1 rounded border transition-colors duration-200 ${
-                  isDarkMode
-                    ? "border-slate-600 text-slate-100 hover:bg-slate-700"
-                    : "border-slate-300 hover:bg-slate-100"
-                }`}
+                className="px-4 py-2 rounded bg-slate-500 text-white text-sm"
               >
                 {translate("Cancel")}
               </button>
               <button
+                type="button"
                 onClick={saveForm}
-                className="px-3 py-1 rounded bg-indigo-600 text-white transition-colors duration-200 hover:bg-indigo-700"
+                className="px-4 py-2 rounded bg-green-600 text-white text-sm"
               >
                 {translate("Save")}
               </button>
             </div>
-            <p
-              className={`mt-3 text-xs text-center ${
-                isDarkMode ? "text-slate-400" : "text-slate-500"
-              }`}
-            >
-              {translate(
-                "Hold Ctrl while hovering a sum card to edit, duplicate, or delete."
-              )}
-            </p>
           </div>
-        </dialog>
+        </div>
       )}
     </div>
   );
