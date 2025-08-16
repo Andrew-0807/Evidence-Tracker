@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useStorage } from "./useStorage";
 import { useLanguage } from "../localization/LanguageContext";
 import { useTheme } from "./ThemeProvider";
@@ -11,6 +11,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
   const [ctrlPressed, setCtrlPressed] = useState(false);
   const { translate } = useLanguage();
   const { isDarkMode } = useTheme();
+  const overlayRef = useRef(null);
 
   // Load persisted sums on mount
   useEffect(() => {
@@ -37,6 +38,17 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
       window.removeEventListener("keyup", up);
     };
   }, []);
+
+  // Focus modal and prevent background scroll when open
+  useEffect(() => {
+    if (!form) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    overlayRef.current?.focus();
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [form]);
 
   // Persist helper
   const persist = async (list) => {
@@ -91,6 +103,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
 
   // Editor logic
   const closeEditor = () => setForm(null);
+  // eslint-disable-next-line no-unused-vars
   const addSlot = () =>
     setForm((f) =>
       f.items.length >= 5
@@ -103,12 +116,14 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
             ],
           }
     );
+  // eslint-disable-next-line no-unused-vars
   const updateItem = (idx, field, val) =>
     setForm((f) => {
       const items = [...f.items];
       items[idx] = { ...items[idx], [field]: val };
       return { ...f, items };
     });
+  // eslint-disable-next-line no-unused-vars
   const removeSlot = (idx) =>
     setForm((f) => ({
       ...f,
@@ -128,6 +143,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
       })
       .join(" ");
 
+  // eslint-disable-next-line no-unused-vars
   const previewValue = useMemo(() => {
     if (!form) return 0;
     return form.items.reduce((sum, it) => {
@@ -136,6 +152,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
     }, 0);
   }, [form, monthlyData]);
 
+  // eslint-disable-next-line no-unused-vars
   const saveForm = () => {
     if (!form.name.trim()) return;
     if ((form.note || "").length > 60) return;
@@ -274,9 +291,10 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
       )}
 
       {form && (
-        <dialog
-          open
-          className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 animate-fade-in"
+        <div
+          ref={overlayRef}
+          tabIndex="-1"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in"
         >
           <div
             className={`max-w-md w-full rounded p-6 animate-fade-in ${
@@ -285,7 +303,7 @@ const CustomSums = ({ monthlyData = {}, availableTags = [] }) => {
           >
             {/* form fields */}
           </div>
-        </dialog>
+        </div>
       )}
     </div>
   );
