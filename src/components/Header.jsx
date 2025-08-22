@@ -1,7 +1,6 @@
-
 import React from "react";
 import { useTheme } from "./ThemeProvider";
-import { useLanguage } from '../localization/LanguageContext';
+import { useLanguage } from "../localization/LanguageContext";
 
 const Header = ({ onShowOverview, onShowSearch }) => {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -10,9 +9,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
   return (
     <header
       className={`shadow-lg border-b transition-colors duration-300 animate-fade-in ${
-        isDarkMode
-          ? "bg-slate-800 border-slate-700"
-          : "bg-white border-slate-200"
+        isDarkMode ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 py-4">
@@ -24,6 +21,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -50,6 +48,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
               </p>
             </div>
           </div>
+
           <div className="flex items-center space-x-4">
             <button
               onClick={toggleTheme}
@@ -59,6 +58,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                   : "bg-slate-800 hover:bg-slate-900 text-white"
               }`}
               title={isDarkMode ? translate("Switch to light mode") : translate("Switch to dark mode")}
+              aria-label={isDarkMode ? translate("Switch to light mode") : translate("Switch to dark mode")}
             >
               {isDarkMode ? (
                 <svg
@@ -66,6 +66,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -80,6 +81,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -90,27 +92,32 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                 </svg>
               )}
             </button>
+
             <button
-              onClick={() => setLanguage(language === 'en' ? 'ro' : 'en')}
+              onClick={() => setLanguage(language === "en" ? "ro" : "en")}
               className={`p-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center text-sm font-bold ${
                 isDarkMode
                   ? "bg-purple-500 hover:bg-purple-600 text-white"
                   : "bg-purple-600 hover:bg-purple-700 text-white"
               }`}
-              title={language === 'en' ? translate("Switch to Romanian") : translate("Switch to English")}
+              title={language === "en" ? translate("Switch to Romanian") : translate("Switch to English")}
+              aria-label={language === "en" ? translate("Switch to Romanian") : translate("Switch to English")}
             >
-              {language === 'en' ? 'RO' : 'EN'}
+              {language === "en" ? "RO" : "EN"}
             </button>
+
             <button
               onClick={onShowSearch}
               className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2.5 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2"
               title={translate("Search entries")}
+              aria-label={translate("Search entries")}
             >
               <svg
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -121,15 +128,18 @@ const Header = ({ onShowOverview, onShowSearch }) => {
               </svg>
               <span className="hidden sm:inline">{translate("Search")}</span>
             </button>
+
             <button
               onClick={() => onShowOverview(true)}
               className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2"
+              aria-label={translate("Overview")}
             >
               <svg
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
