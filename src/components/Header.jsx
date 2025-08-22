@@ -58,7 +58,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                   ? "bg-yellow-500 hover:bg-yellow-600 text-white"
                   : "bg-slate-800 hover:bg-slate-900 text-white"
               }`}
-              title={translate(`Switch to ${isDarkMode ? "light" : "dark"} mode`)}
+              title={isDarkMode ? translate("Switch to light mode") : translate("Switch to dark mode")}
             >
               {isDarkMode ? (
                 <svg
@@ -97,7 +97,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                   ? "bg-purple-500 hover:bg-purple-600 text-white"
                   : "bg-purple-600 hover:bg-purple-700 text-white"
               }`}
-              title={translate(`Switch to ${language === 'en' ? 'Romanian' : 'English'}`)}
+              title={language === 'en' ? translate("Switch to Romanian") : translate("Switch to English")}
             >
               {language === 'en' ? 'RO' : 'EN'}
             </button>
