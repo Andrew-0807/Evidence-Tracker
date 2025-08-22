@@ -24,6 +24,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -58,7 +59,8 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                   ? "bg-yellow-500 hover:bg-yellow-600 text-white"
                   : "bg-slate-800 hover:bg-slate-900 text-white"
               }`}
-              title={translate(`Switch to ${isDarkMode ? "light" : "dark"} mode`)}
+              title={isDarkMode ? translate("Switch to light mode") : translate("Switch to dark mode")}
+              aria-label={isDarkMode ? translate("Switch to light mode") : translate("Switch to dark mode")}
             >
               {isDarkMode ? (
                 <svg
@@ -66,6 +68,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -80,6 +83,7 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -97,7 +101,8 @@ const Header = ({ onShowOverview, onShowSearch }) => {
                   ? "bg-purple-500 hover:bg-purple-600 text-white"
                   : "bg-purple-600 hover:bg-purple-700 text-white"
               }`}
-              title={translate(`Switch to ${language === 'en' ? 'Romanian' : 'English'}`)}
+              title={language === 'en' ? translate("Switch to Romanian") : translate("Switch to English")}
+              aria-label={language === 'en' ? translate("Switch to Romanian") : translate("Switch to English")}
             >
               {language === 'en' ? 'RO' : 'EN'}
             </button>
@@ -105,12 +110,14 @@ const Header = ({ onShowOverview, onShowSearch }) => {
               onClick={onShowSearch}
               className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2.5 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2"
               title={translate("Search entries")}
+              aria-label={translate("Search entries")}
             >
               <svg
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -124,12 +131,14 @@ const Header = ({ onShowOverview, onShowSearch }) => {
             <button
               onClick={() => onShowOverview(true)}
               className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2"
+              aria-label={translate("Overview")}
             >
               <svg
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
